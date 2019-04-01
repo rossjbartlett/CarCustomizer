@@ -6,7 +6,10 @@ public class Model {
 	private String model;
 	private String exterior;
 	private String interior;
-	private String result;
+	private String result; // TODO unused
+	private String exteriorName;
+	private String interiorName;
+
 
 	
 	public String getExterior() {
@@ -45,8 +48,9 @@ public class Model {
 
 
 	public void calcResult() {
-		result = year + " "+ make + " "+ model+" "+exterior + " "+interior;
-		
+		result = (year + "_"+ make + "_"+ model+"_"+exterior + "_"+interior);
+		exteriorName = (year + "_"+ make + "_"+ model+"_"+exterior) + ".png";
+		interiorName = (make + "_"+ model+"_"+interior) + ".png";
 	}
 
 	
@@ -62,6 +66,14 @@ public class Model {
 	public void setModel(String model) {
 		this.model = model;
 	}
-	
+
+	public String getInteriorName() {
+		return interiorName;
+	}
+
+
+	public String getExteriorName() {
+		return exteriorName;
+	}
 
 }

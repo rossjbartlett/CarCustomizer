@@ -26,14 +26,17 @@ public class Controller {
 				theModel.setMake(theView.getMake());
 				theModel.setModel(theView.getModel());
 				theModel.setExterior(theView.getExteriorColor());
-				theModel.setInterior(theView.getInteriorColor());
+				theModel.setInterior(theView.getInteriorColor().replace(' ', '_'));
 
 				theModel.calcResult();
-				theView.setSolution(theModel.getResult());
+				
+				theView.setExteriorPic("pics/" + theModel.getExteriorName());
+				theView.setInteriorPic("pics/" + theModel.getInteriorName());
+
 			}
 			catch (Exception e)
 			{
-				theView.displayErrorMessage(e.getMessage());
+				System.err.println(e.getMessage());
 			}
 		}
 	}

@@ -1,8 +1,13 @@
+import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
@@ -11,7 +16,8 @@ public class View extends JFrame{
 	
 	private JButton refreshButton = new JButton ("Refresh");
 	
-	private JTextField solution = new JTextField(25); //TODO rename, make this an image
+	private JLabel exteriorPic = new JLabel();
+	private JLabel interiorPic = new JLabel(); 
 
 	private JLabel exteriorLabel = new JLabel ("Exterior Color:");
 	private JLabel interiorLabel = new JLabel ("Interior");
@@ -33,50 +39,41 @@ public class View extends JFrame{
 	private String[] makes = { "Honda", "Ford", "Toyota"};
 	private JComboBox<String> makeComboBox = new JComboBox<String>(makes);
 	
-	private String[] hondaModels = { "Civic", "Accord", "Ridgeline"};
+	private String[] hondaModels = { "Civic", "Accord"};
 	private String[] fordModels = { "F-150", "Focus", "Mustang"};
 	private String[] toyotaModels = { "Camry", "Prius", "Corolla"};
 
 	Map<String, String[]> makesToModels = new HashMap<String, String[]>();
 	private JComboBox<String> modelComboBox = new JComboBox<String>(hondaModels);
+	
+	JPanel resultPanel;
+	JPanel choicesPanel;
 
 	
 
 	View(){
-		this.setSize(900,600);
+		this.setSize(950,600);
 		this.setResizable(false);
 		this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JPanel choicesPanel = new JPanel ();
+		
+		setupComboBoxes();
+		setupChoicesPanel();
+		setupResultsPanel();
 
-		JPanel resultPanel = new JPanel ();
-		resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
+		refreshButton.setAlignmentX(CENTER_ALIGNMENT);
 
-
+		this.add(choicesPanel);
+		this.add(refreshButton);
+		this.add(resultPanel);
+	}
+	
+	private void setupComboBoxes() {
+		//setup combo boxes map, key (make name) to array of models for that make 
 	    makesToModels.put("Honda", hondaModels);
 	    makesToModels.put("Ford", fordModels);
 	    makesToModels.put("Toyota", toyotaModels);
-
-		makeComboBox.setSelectedIndex(0); 
-		makeComboBox.setSelectedIndex(0);
-
-		choicesPanel.add(yearLabel);
-		choicesPanel.add(yearComboBox);
-		choicesPanel.add(makeLabel);
-		choicesPanel.add(makeComboBox);
-		choicesPanel.add(modelLabel);
-		choicesPanel.add(modelComboBox);
-		choicesPanel.add(exteriorLabel);
-		choicesPanel.add(exteriorColorComboBox);
-		choicesPanel.add(interiorLabel);
-		choicesPanel.add(interiorColorComboBox);
-
-		solution.setAlignmentX(CENTER_ALIGNMENT);
-		resultPanel.add(solution);
-		refreshButton.setAlignmentX(CENTER_ALIGNMENT);
-		resultPanel.add(refreshButton);
-
-		
+	    
 		makeComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -87,11 +84,34 @@ public class View extends JFrame{
 		        }
 			}
 		});
-
-		this.add(choicesPanel);
-		this.add(resultPanel);
-
 	}
+
+	
+	private void setupChoicesPanel() {
+		choicesPanel = new JPanel();
+		choicesPanel.setLayout(new BoxLayout(choicesPanel, BoxLayout.X_AXIS));
+		choicesPanel.setMaximumSize( new Dimension(900, 50));
+		choicesPanel.add(yearLabel);
+		choicesPanel.add(yearComboBox);
+		choicesPanel.add(makeLabel);
+		choicesPanel.add(makeComboBox);
+		choicesPanel.add(modelLabel);
+		choicesPanel.add(modelComboBox);
+		choicesPanel.add(exteriorLabel);
+		choicesPanel.add(exteriorColorComboBox);
+		choicesPanel.add(interiorLabel);
+		choicesPanel.add(interiorColorComboBox);
+	}
+	private void setupResultsPanel() {
+		resultPanel = new JPanel ();
+		resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.X_AXIS));
+		resultPanel.setMaximumSize( new Dimension(900, 500));
+		resultPanel.add(exteriorPic);
+		resultPanel.add(interiorPic);
+//		setExteriorPic("pics/2017_Honda_Civic_Black.png");
+//		setInteriorPic("pics/Honda_Accord_Beige_Leather.png");
+	}
+
 
 	public int getYear()
 	{
@@ -114,17 +134,33 @@ public class View extends JFrame{
 		return (String) interiorColorComboBox.getSelectedItem();
 	}
 	
-	public void setSolution (String string)
+	public void setExteriorPic (String file)
 	{
-		solution.setText(string);
+		setPic (exteriorPic,  file);
 	}
+	public void setInteriorPic (String file)
+	{
+		setPic (interiorPic,  file);
+	}
+	
+	
+	private void setPic (JLabel jLabel, String file)
+	{
+		BufferedImage myPicture;
+		try {
+			myPicture = ImageIO.read(new File(file));
+			ImageIcon img = new ImageIcon(new ImageIcon(myPicture).getImage().getScaledInstance(400, 300, Image.SCALE_SMOOTH));
+			jLabel.setIcon(img);
+		} catch (IOException e) {
+			System.err.println(e.getMessage() + " "+ file);
+			jLabel = new JLabel(file); // TODO not working, maybe make it a blank image 
+		}
+	}
+	
+	
 	void addRefreshListener (ActionListener listenForCalcButton)
 	{
 		refreshButton.addActionListener(listenForCalcButton);
-	}
-	void displayErrorMessage (String errorMessage)
-	{
-		JOptionPane.showMessageDialog(this, errorMessage);
 	}
 
 
