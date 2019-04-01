@@ -40,8 +40,8 @@ public class View extends JFrame{
 	private JComboBox<String> makeComboBox = new JComboBox<String>(makes);
 	
 	private String[] hondaModels = { "Civic", "Accord"};
-	private String[] fordModels = { "F-150", "Focus", "Mustang"};
-	private String[] toyotaModels = { "Camry", "Prius", "Corolla"};
+	private String[] fordModels = { "F-150", "Mustang"};
+	private String[] toyotaModels = {"Camry"};
 
 	Map<String, String[]> makesToModels = new HashMap<String, String[]>();
 	private JComboBox<String> modelComboBox = new JComboBox<String>(hondaModels);
@@ -52,6 +52,7 @@ public class View extends JFrame{
 	
 
 	View(){
+		this.setTitle("CADA Car Customizer");
 		this.setSize(950,600);
 		this.setResizable(false);
 		this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
@@ -146,9 +147,8 @@ public class View extends JFrame{
 	
 	private void setPic (JLabel jLabel, String file)
 	{
-		BufferedImage myPicture;
 		try {
-			myPicture = ImageIO.read(new File(file));
+			BufferedImage myPicture = ImageIO.read(new File(file));
 			ImageIcon img = new ImageIcon(new ImageIcon(myPicture).getImage().getScaledInstance(400, 300, Image.SCALE_SMOOTH));
 			jLabel.setIcon(img);
 		} catch (IOException e) {
@@ -158,9 +158,9 @@ public class View extends JFrame{
 	}
 	
 	
-	void addRefreshListener (ActionListener listenForCalcButton)
+	void addRefreshListener (ActionListener listener)
 	{
-		refreshButton.addActionListener(listenForCalcButton);
+		refreshButton.addActionListener(listener);
 	}
 
 
