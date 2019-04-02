@@ -153,7 +153,6 @@ public class View extends JFrame{
 			jLabel.setIcon(img);
 		} catch (IOException e) {
 			System.err.println(e.getMessage() + " "+ file);
-			jLabel = new JLabel(file); // TODO not working, maybe make it a blank image 
 		}
 	}
 	
