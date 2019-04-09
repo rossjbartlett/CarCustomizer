@@ -20,7 +20,7 @@ public class View extends JFrame{
 	private JLabel interiorPic = new JLabel(); 
 
 	private JLabel exteriorLabel = new JLabel ("Exterior Color:");
-	private JLabel interiorLabel = new JLabel ("Interior");
+	private JLabel interiorLabel = new JLabel ("Interior:");
 	private JLabel yearLabel = new JLabel ("Year:");
 	private JLabel makeLabel = new JLabel ("Make:");
 	private JLabel modelLabel = new JLabel ("Model:");
